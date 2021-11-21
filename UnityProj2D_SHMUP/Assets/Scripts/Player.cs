@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
     private Spaceship spaceship;
     public GameObject shipObject;
     [SerializeField] private Camera gameCamera;
-
+    private int lives = 2;
+    private int credits = 2;
 
     private void Awake()
     {
