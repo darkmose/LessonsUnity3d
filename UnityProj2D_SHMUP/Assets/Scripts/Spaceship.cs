@@ -76,7 +76,7 @@ public class Spaceship : MonoBehaviour
 
     public void Dash(Vector2 direction)
     {
-
+        rigidbody2d.AddForce(direction, ForceMode2D.Impulse);
     }
 
     public void ActivateShield()

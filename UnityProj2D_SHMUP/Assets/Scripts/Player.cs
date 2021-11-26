@@ -26,11 +26,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
         {
             spaceship.FireMainWeapon();
         }
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && !Input.GetMouseButton(0))
         {
             spaceship.FireAltWeapon();
         }
@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         spaceship.Move();
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
