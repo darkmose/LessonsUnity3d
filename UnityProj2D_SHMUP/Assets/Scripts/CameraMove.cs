@@ -11,12 +11,12 @@ public class CameraMove : MonoBehaviour
     private float timeCounter;
 
 
-    void Start()
+    private void Start()
     {
         gameCamera = GetComponent<Camera>();
         startPoint = gameCamera.transform.position;
         endPoint = gameCamera.transform.position;
-        endPoint.y += 200f;
+        endPoint.y += 500f;
     }
 
 

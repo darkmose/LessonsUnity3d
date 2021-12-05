@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +14,13 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
+        EventDelegate.OnEnemySpawn += OnEnemySpawnEventHandler;
+    
     }
 
-
-
+    private void OnEnemySpawnEventHandler()
+    {
+        Debug.LogWarning("Enemy was spawned");
+    }
 }

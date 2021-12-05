@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Spaceship spaceship;
-    public GameObject shipObject;
+    [SerializeField] private GameObject shipObject;
     [SerializeField] private Camera gameCamera;
     private int lives = 2;
     private int credits = 2;
@@ -42,10 +42,17 @@ public class Player : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.collider.name);
+        if (collision.gameObject.CompareTag("EnemyMissile"))
+        {
+            var explossion = Instantiate(PrefabsDictionary.GetParticlesPrefab(PrefabsDictionary.Particles.MissileExplosion), collision.transform.position, Quaternion.identity, transform);
+            explossion.GetComponent<ParticleSystem>().Play();
+            GetComponent<Rigidbody2D>().AddForceAtPosition(transform.position - collision.transform.position, collision.transform.position, ForceMode2D.Impulse);
+        }
     }
+
 
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -53,10 +60,6 @@ public class Player : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log(collision.name);
-    }
 
 }
 
