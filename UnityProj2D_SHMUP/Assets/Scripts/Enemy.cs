@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     
 
     [SerializeField] private List<Transform> firePoints;
+    public Vector2 fireDirection;
 
     private GameObject ammo;
     private Vector2[] movePoints;
@@ -113,28 +114,28 @@ public class Enemy : MonoBehaviour
         switch (type)
         {
             case EnemyType.BigBoy:
-                hp = 500f;
+                hp = 300f;
                 defense = 4f;
-                bulletSpeed = 10;
+                bulletSpeed = 40;
                 speed = 2f;
-                firerate = 1f;
+                firerate = 0.5f;
                 ammo_type = AmmoType.Missile;
                 ammo = PrefabsDictionary.GetAmmoPrefab(PrefabsDictionary.Ammo.Missile);
                 break;
             case EnemyType.Bluster:
-                hp = 500f;
+                hp = 250f;
                 defense = 4f;
-                bulletSpeed = 10;
+                bulletSpeed = 30;
                 speed = 3f;
                 firerate = 4f;
                 ammo_type = AmmoType.Bullet;
                 ammo = PrefabsDictionary.GetAmmoPrefab(PrefabsDictionary.Ammo.Bullet);
                 break;
             case EnemyType.RedKiller:
-                hp = 500f;
+                hp = 200f;
                 defense = 4f;
-                bulletSpeed = 10;
-                speed = 4f;
+                bulletSpeed = 30;
+                speed = 8f;
                 firerate = 3f;
                 ammo_type = AmmoType.Bullet;
                 ammo = PrefabsDictionary.GetAmmoPrefab(PrefabsDictionary.Ammo.Bullet);
@@ -154,6 +155,7 @@ public class Enemy : MonoBehaviour
         {
             case BehaviourType.D_type:
                 GenerateMovePoints(behaviourType);
+                moveParams_D.time = TimeFromDistanceAndSpeed();
                 rigidbody.position = movePoints[0];
                 rigidbody.DOPath(movePoints, moveParams_D.time)
                     .SetLoops(moveParams_D.loopsCount, moveParams_D.loopType)
@@ -169,41 +171,90 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    float TimeFromDistanceAndSpeed() 
+    {
+        var S = 0f;
+        var V = speed;
+
+        for (int i = 1; i < movePoints.Length; i++)
+        {
+            S += Vector2.Distance(movePoints[i], movePoints[i - 1]);
+        }
+        if (V != 0f)
+        {
+            var time = S / V;
+            return time;
+        }
+        return 0;
+    }
+
+    public void FireBullet()
+    {
+        timeCounter += Time.deltaTime;
+
+        if (timeCounter >= 1 / firerate)
+        {
+            switch (fireType)
+            {
+                case EnemyFireType.Radian:
+                    for (int i = 0; i < firePoints.Count; i++)
+                    {
+                        Vector2 localFireDirection = (firePoints[i].position - transform.position).normalized;
+                        var quaternion = Quaternion.LookRotation(Vector3.forward, localFireDirection);
+                        var _ammo = Instantiate(ammo, firePoints[i].position, quaternion, transform.parent);
+                        _ammo.tag = "EnemyAmmo";
+                        _ammo.GetComponent<Rigidbody2D>().velocity = localFireDirection * bulletSpeed;
+                        Destroy(_ammo, 3);
+                    }
+                    break;
+                case EnemyFireType.Direct:
+                    for (int i = 0; i < firePoints.Count; i++)
+                    {
+                        var _ammo = Instantiate(ammo, firePoints[i].position, transform.rotation, transform.parent);
+                        _ammo.tag = "EnemyAmmo";
+                        _ammo.GetComponent<Rigidbody2D>().velocity = (fireDirection).normalized * bulletSpeed;
+                        Destroy(_ammo, 3);
+                    }
+                    break;
+            }
 
 
-    //public void FireBullet()
-    //{
-    //    timeCounter += Time.deltaTime;
+            timeCounter = 0f;
+        }
+    }
 
-    //    if (timeCounter >= 1 / firerate)
-    //    {
-    //        for (int i = 0; i < firePoints.Count; i++)
-    //        {
-    //            var _ammo = Instantiate(ammo, firePoint.position, transform.rotation, transform.parent);
-    //            _ammo.tag = "EnemyAmmo";
-    //            _ammo.GetComponent<Rigidbody2D>().velocity = (firePoint.position - transform.position).normalized * bulletSpeed * 4;
-    //            Destroy(_ammo, 2);
-    //        }
-            
-    //        timeCounter = 0f;
-    //    }
-    //}
+    public void FireMissile()
+    {
+        timeCounter += Time.deltaTime;
 
-    //public void FireMissile() 
-    //{
-    //    timeCounter += Time.deltaTime;
-
-    //    var startPoint = firePoint.position;
-
-    //    if (timeCounter >= 1 / firerate)
-    //    {
-    //        var _ammo = Instantiate(ammo, startPoint, transform.rotation, transform.parent);
-    //        _ammo.tag = "EnemyMissile";
-    //        _ammo.GetComponent<Rigidbody2D>().velocity = (firePoint.position - transform.position).normalized * bulletSpeed * 4;
-    //        Destroy(_ammo, 2);
-    //        timeCounter = 0f;
-    //    }
-    //}
+        if (timeCounter >= 1 / firerate)
+        {
+            switch (fireType)
+            {
+                case EnemyFireType.Radian:
+                    for (int i = 0; i < firePoints.Count; i++)
+                    {
+                        Vector2 localFireDirection = (firePoints[i].position - transform.position).normalized;
+                        var quaternion = Quaternion.LookRotation(Vector3.forward, localFireDirection);
+                        var _ammo = Instantiate(ammo, firePoints[i].position, quaternion, transform.parent);
+                        _ammo.tag = "EnemyMissile";
+                        _ammo.GetComponent<Rigidbody2D>().velocity = localFireDirection * bulletSpeed;
+                        Destroy(_ammo, 3);
+                    }
+                    break;
+                case EnemyFireType.Direct:
+                    for (int i = 0; i < firePoints.Count; i++)
+                    {
+                        var _ammo = Instantiate(ammo, firePoints[i].position, transform.rotation, transform.parent);
+                        _ammo.tag = "EnemyMissile";
+                        _ammo.GetComponent<Rigidbody2D>().velocity = (fireDirection).normalized * bulletSpeed;
+                        Destroy(_ammo, 3);
+                    }
+                    break;
+            }
+            timeCounter = 0f;
+        }
+    }
 
     private void TakeDamage(float damage) 
     {
@@ -256,10 +307,10 @@ public class Enemy : MonoBehaviour
         switch (ammo_type)
         {
             case AmmoType.Bullet:
-                //FireBullet();
+                FireBullet();
                 break;
             case AmmoType.Missile:
-                //FireMissile();
+                FireMissile();
                 break;
         }
     }

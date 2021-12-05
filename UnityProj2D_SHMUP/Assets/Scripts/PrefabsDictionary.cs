@@ -38,9 +38,9 @@ public class PrefabsDictionary : MonoBehaviour
         ammunitionPrefabs.Add(Ammo.Missile, Resources.Load<GameObject>("Prefabs/Ammo/Missile"));
         ammunitionPrefabs.Add(Ammo.HomingMissile, Resources.Load<GameObject>("Prefabs/Ammo/HomingMissile"));
 
-        enemiesPrefabs.Add(Enemies.BigBoy, Resources.Load<GameObject>("Prefabs/Spaceships/BigBoy"));
-        enemiesPrefabs.Add(Enemies.Bluster, Resources.Load<GameObject>("Prefabs/Spaceships/Bluster"));
-        enemiesPrefabs.Add(Enemies.RedKiller, Resources.Load<GameObject>("Prefabs/Spaceships/RedKiller"));
+        enemiesPrefabs.Add(Enemies.BigBoy, Resources.Load<GameObject>("Prefabs/Spaceships/Enemies/BigBoy"));
+        enemiesPrefabs.Add(Enemies.Bluster, Resources.Load<GameObject>("Prefabs/Spaceships/Enemies/Bluster"));
+        enemiesPrefabs.Add(Enemies.RedKiller, Resources.Load<GameObject>("Prefabs/Spaceships/Enemies/RedKiller"));
 
         particlesPrefabs.Add(Particles.EnemyExplosion, Resources.Load<GameObject>("Prefabs/Particles/ExplosionEnemyParticles"));
         particlesPrefabs.Add(Particles.MissileExplosion, Resources.Load<GameObject>("Prefabs/Particles/ExplosionMissileParticles"));

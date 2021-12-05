@@ -11,8 +11,7 @@ public class Spaceship : MonoBehaviour
     public Weapon altWeapon;
     private GameObject mainWeapon_obj;
     private GameObject altWeapon_obj;
-    private float horizSpeed = 10f;
-    private float vertSpeed = 5f;
+    private float spaceshipSpeed;
     private float shieldCapacity = 100f;
     private float dashSpeed = 10f;
 
@@ -42,8 +41,7 @@ public class Spaceship : MonoBehaviour
             case SpaceshipType.Andromeda:
                 mainWeapon.InitializeWeapon(Weapon.WeaponType.SimpleTurret);
                 altWeapon.InitializeWeapon(Weapon.WeaponType.SingleMissle);
-                horizSpeed = 7f;
-                vertSpeed = 5f;
+                spaceshipSpeed = 7f;
                 shieldCapacity = 100f;
                 dashSpeed = 10f;
                 break;
@@ -51,8 +49,7 @@ public class Spaceship : MonoBehaviour
             case SpaceshipType.Spaceglader:
                 mainWeapon.InitializeWeapon(Weapon.WeaponType.SimpleTurret);
                 altWeapon.InitializeWeapon(Weapon.WeaponType.SingleMissle);
-                horizSpeed = 8f;
-                vertSpeed = 6f;
+                spaceshipSpeed = 8f;
                 shieldCapacity = 200f;
                 dashSpeed = 15f;
                 break;
@@ -60,8 +57,7 @@ public class Spaceship : MonoBehaviour
             case SpaceshipType.Deltashifter:
                 mainWeapon.InitializeWeapon(Weapon.WeaponType.SimpleTurret);
                 altWeapon.InitializeWeapon(Weapon.WeaponType.SingleMissle);
-                horizSpeed = 10f;
-                vertSpeed = 8f;
+                spaceshipSpeed = 10f;
                 shieldCapacity = 250f;
                 dashSpeed = 20f;
                 break;
@@ -70,8 +66,8 @@ public class Spaceship : MonoBehaviour
 
     public void Move()
     {
-        rigidbody2d.AddForce(Vector2.right*horizSpeed*Input.GetAxisRaw("Horizontal") * 10, ForceMode2D.Force);
-        rigidbody2d.AddForce(Vector2.up*vertSpeed*Input.GetAxisRaw("Vertical")* 10, ForceMode2D.Force);
+        rigidbody2d.AddForce(Vector2.right* spaceshipSpeed * Input.GetAxisRaw("Horizontal") * 15, ForceMode2D.Force);
+        rigidbody2d.AddForce(Vector2.up* spaceshipSpeed * Input.GetAxisRaw("Vertical")* 15, ForceMode2D.Force);
     }
 
     public void Dash(Vector2 direction)
