@@ -8,6 +8,9 @@ TagManager:
   - EnemyAmmo
   - PlayerMissile
   - EnemyMissile
+  - BulletsRoot
+  - Shield
+  - Enemy
   layers:
   - Default
   - TransparentFX

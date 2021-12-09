@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ObjectPooler
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 75620fa12bbd0f847ae3be5e4a7a8656,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: rootOfPooledGameobjects
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pools.Array.size
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pools.Array.data[0].tag
+    value: Bullet
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pools.Array.data[0].prefab
+    value: 
+    objectReference: {fileID: 1446371166249447168, guid: 15057df1fc35a3747a64eea1f46cf2ad,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: pools.Array.data[0].size
+    value: 500
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pools.Array.data[1].tag
+    value: Missile
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pools.Array.data[1].prefab
+    value: 
+    objectReference: {fileID: 2723600761357643465, guid: 2fab0b7f061443d47a09bd7e96c9bd66,
+      type: 3}
+  - target: {fileID: 0}
+    propertyPath: pools.Array.data[1].size
+    value: 500
+    objectReference: {fileID: 0}

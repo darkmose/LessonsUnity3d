@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: e87770d228b938b46bf12a2f370fd637
+guid: 2acea7406f4c3274e8e08c854fb7b8dd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6308135512760024898
-    second: energyBar_0
+      213: 916316281761429868
+    second: energyBar2_0
   - first:
-      213: -3389120061881713853
-    second: energyBar_1
+      213: -8612664303021539308
+    second: energyBar2_1
   - first:
-      213: -4457895061086354075
-    second: energyBar_2
+      213: 3889648078819244783
+    second: energyBar2_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -40,12 +40,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 2
+    wrapV: 2
+    wrapW: 2
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -120,64 +120,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: energyBar_0
+      name: energyBar2_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 130
-        width: 381
-        height: 55
+        x: 118
+        y: 34
+        width: 251
+        height: 2397
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb089ee4c200578a0800000000000000
-      internalID: -6308135512760024898
+      spriteID: c69fb4cadc867bc00800000000000000
+      internalID: 916316281761429868
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: energyBar_1
+      name: energyBar2_1
       rect:
         serializedVersion: 2
-        x: 4
-        y: 69
-        width: 381
-        height: 56
+        x: 499
+        y: 60
+        width: 189
+        height: 2342
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34bf362924d67f0d0800000000000000
-      internalID: -3389120061881713853
+      spriteID: 410c6b0c27ba97880800000000000000
+      internalID: -8612664303021539308
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: energyBar_2
+      name: energyBar2_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 4
-        width: 385
-        height: 60
+        x: 798
+        y: 755
+        width: 885
+        height: 901
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 565caf59f006222c0800000000000000
-      internalID: -4457895061086354075
+      spriteID: fea3d47c15ecaf530800000000000000
+      internalID: 3889648078819244783
       vertices: []
       indices: 
       edges: []

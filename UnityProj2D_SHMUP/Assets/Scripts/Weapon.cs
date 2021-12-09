@@ -6,17 +6,38 @@ public class Weapon : MonoBehaviour
 {
     public enum WeaponType { SimpleTurret, SpreadTurret, HomingMissle, SingleMissle };
     public WeaponType type;
+    public float baseDamage;
     public float damage = 100f;
     public float bulletSpeed = 10f;
     public float fireRate = 20f;
     private float timeCounter = 0f;
-    private bool fireSide;
-    GameObject ammo;
+    private List<Transform> firePoints;
+    private Transform firePointsRoot;
+
+    private void Awake()
+    {
+        firePointsRoot = transform.Find("FirePoints");
+        firePoints = new List<Transform>();
+    }
+
+    private void Start()
+    {
+        var firePointsRoot = transform.Find("FirePoints");
+        for (int i = 0; i < firePointsRoot.childCount; i++)
+        {
+            firePoints.Add(firePointsRoot.GetChild(i)); 
+        }
+
+        damage = baseDamage;
+    }
+
 
     public Weapon()
     {
         //Стандартный конструктор
     }
+
+
 
     public void InitializeWeapon(WeaponType type)
     {
@@ -24,49 +45,48 @@ public class Weapon : MonoBehaviour
         switch (type)
         {
             case WeaponType.SimpleTurret:
-                damage = 100f;
-                bulletSpeed = 10f;
+                baseDamage = 80f;
+                bulletSpeed =80f;
                 fireRate = 5f;
                 type = WeaponType.SimpleTurret;
-                ammo = PrefabsDictionary.GetAmmoPrefab(PrefabsDictionary.Ammo.Bullet);
                 break;
             case WeaponType.SpreadTurret:
-                damage = 120f;
-                bulletSpeed = 10f;
+                baseDamage = 100f;
+                bulletSpeed = 80f;
                 fireRate = 4f;
                 type = WeaponType.SpreadTurret;
-                ammo = PrefabsDictionary.GetAmmoPrefab(PrefabsDictionary.Ammo.Bullet);
                 break;
             case WeaponType.HomingMissle:
-                damage = 240f;
-                bulletSpeed = 10f;
+                baseDamage = 240f;
+                bulletSpeed = 30f;
                 fireRate = 2f;
                 type = WeaponType.HomingMissle;
-                ammo = PrefabsDictionary.GetAmmoPrefab(PrefabsDictionary.Ammo.HomingMissile);
                 break;
             case WeaponType.SingleMissle:
-                damage = 250f;
-                bulletSpeed = 10f;
+                baseDamage = 250f;
+                bulletSpeed = 40f;
                 fireRate = 2f;
                 type = WeaponType.SingleMissle;
-                ammo = PrefabsDictionary.GetAmmoPrefab(PrefabsDictionary.Ammo.Missile);
                 break;
         }
     }
 
 
-    private void FireMissile() 
+    private void FireMissile()
     {
         timeCounter += Time.deltaTime;
-        var side = fireSide ? Vector3.right/2 : Vector3.left/2;
-        var startPoint = transform.position + Vector3.up + side;
-        fireSide = !fireSide;
 
         if (timeCounter >= 1 / fireRate)
         {
-            var missile = Instantiate(ammo, startPoint, transform.rotation);
-            missile.GetComponent<Rigidbody2D>().velocity = Vector2.up * bulletSpeed * 4;
-            Destroy(missile, 2);
+            for (int i = 0; i < firePoints.Count; i++)
+            {
+                var _ammo = ObjectPooler.GetPooledGameObject("Missile");
+                _ammo.transform.position = firePoints[i].position;
+                _ammo.transform.rotation = transform.rotation;
+                _ammo.transform.parent = transform.parent;
+                _ammo.GetComponent<Projectile>().damage = damage;
+                _ammo.GetComponent<Rigidbody2D>().velocity = (transform.up).normalized * bulletSpeed;
+            }
             timeCounter = 0f;
         }
     }
@@ -75,14 +95,38 @@ public class Weapon : MonoBehaviour
     {
         timeCounter += Time.deltaTime;
 
-        var startPoint = transform.position + Vector3.up;
-
         if (timeCounter >= 1 / fireRate)
         {
-            var missile = Instantiate(ammo, startPoint, transform.rotation);
-            missile.GetComponent<Rigidbody2D>().velocity = Vector2.up * bulletSpeed * 4;
-            Destroy(missile, 2);
-            timeCounter = 0f;
+            switch (type)
+            {
+                case WeaponType.SimpleTurret:
+                    for (int i = 0; i < firePoints.Count; i++)
+                    {
+                        var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Blue");
+                        _ammo.transform.position = firePoints[i].position;
+                        _ammo.transform.rotation = transform.rotation;
+                        _ammo.transform.parent = transform.parent;
+                        _ammo.GetComponent<Projectile>().damage = damage;
+                        _ammo.GetComponent<Rigidbody2D>().velocity = (transform.up).normalized * bulletSpeed;
+                    }
+                    timeCounter = 0f;
+                    break;
+                case WeaponType.SpreadTurret:
+                    for (int i = 0; i < firePoints.Count; i++)
+                    {
+                        Vector2 localFireDirection = (firePoints[i].position - firePointsRoot.position).normalized;
+                        var quaternion = Quaternion.LookRotation(Vector3.forward, localFireDirection);
+                        var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Blue");
+                        _ammo.transform.position = firePoints[i].position;
+                        _ammo.transform.rotation = quaternion;
+                        _ammo.transform.parent = transform.parent;
+                        _ammo.GetComponent<Projectile>().damage = damage;
+                        _ammo.GetComponent<Rigidbody2D>().velocity = localFireDirection * bulletSpeed;
+                    }
+                    timeCounter = 0f;
+                    break;
+            }
+
         }
     }
 
@@ -91,12 +135,11 @@ public class Weapon : MonoBehaviour
 
         if (type == WeaponType.SingleMissle || type == WeaponType.HomingMissle)
         {
-            FireMissile();
+            //FireMissile();
         }
         else
         {
             FireTurret();
         }
-        Debug.Log("Pew");
     }
 }

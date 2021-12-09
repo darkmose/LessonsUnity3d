@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1207141436951749799}
   - component: {fileID: 8095844428163808874}
   - component: {fileID: 6651850433809527613}
+  - component: {fileID: 2161518191451613450}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Bullet_Red
   m_TagString: PlayerAmmo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,6 +122,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2161518191451613450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446371166249447168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44207e4db0f235442b7a3a745e0b0d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHoming: 0
+  timeToLive: 2
+  damage: 0
 --- !u!1 &8638597402238411563
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +163,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8638597402238411563}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.002, y: 0.096, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 263916534671504483}
@@ -341,9 +357,9 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.038367853, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.23113209, b: 0.23113209, a: 1}
@@ -721,7 +737,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 10
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -867,7 +883,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.02
+      value: 0.01
       mode: 0
       spread: 0
       speed:

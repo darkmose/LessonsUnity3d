@@ -152,7 +152,6 @@ public class EnemySpawner : MonoBehaviour
             if (enemy != null)
             {
                 EventDelegate.RaiseOnEnemySpawn();
-                Debug.Log($"move points count: {move_points.Count}");
             }
 
             yield return new WaitForSeconds(1/spawnRate);
@@ -165,9 +164,10 @@ public class EnemySpawner : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             StartCoroutine(Spawn());
+            Collider2D thisCollider = gameObject.GetComponent<Collider2D>();
+            Destroy(thisCollider);
         }
-        Collider2D thisCollider = gameObject.GetComponent<Collider2D>();
-        Destroy(thisCollider);
+
     }
 
 }

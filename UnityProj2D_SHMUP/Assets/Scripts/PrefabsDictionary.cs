@@ -12,7 +12,7 @@ public class PrefabsDictionary : MonoBehaviour
 
     public enum Enemies { Bluster, RedKiller, BigBoy };
     public enum Weapons { };
-    public enum Ammo { Bullet, Missile, HomingMissile };
+    public enum Ammo { Bullet_Blue, Bullet_Red, Missile, HomingMissile };
     public enum Spaceships { Andromeda, Spaceglader, Deltashifter };
     public enum Particles { EnemyExplosion, MissileExplosion };
 
@@ -34,7 +34,8 @@ public class PrefabsDictionary : MonoBehaviour
         particlesPrefabs = new Dictionary<Particles, GameObject>();
         enemiesPrefabs = new Dictionary<Enemies, GameObject>();
 
-        ammunitionPrefabs.Add(Ammo.Bullet, Resources.Load<GameObject>("Prefabs/Ammo/Bullet"));
+        ammunitionPrefabs.Add(Ammo.Bullet_Blue, Resources.Load<GameObject>("Prefabs/Ammo/Bullet_Blue"));
+        ammunitionPrefabs.Add(Ammo.Bullet_Red, Resources.Load<GameObject>("Prefabs/Ammo/Bullet_Red"));
         ammunitionPrefabs.Add(Ammo.Missile, Resources.Load<GameObject>("Prefabs/Ammo/Missile"));
         ammunitionPrefabs.Add(Ammo.HomingMissile, Resources.Load<GameObject>("Prefabs/Ammo/HomingMissile"));
 

@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
     private Spaceship spaceship;
     [SerializeField] private GameObject shipObject;
     [SerializeField] private Camera gameCamera;
-    private int lives = 2;
-    private int credits = 2;
+    [SerializeField] private float timeBeforeRespawn;
 
     private void Awake()
     {
@@ -16,7 +14,7 @@ public class Player : MonoBehaviour
         {
             gameCamera = Camera.main;
         }
-        
+        timeBeforeRespawn = 1f;
     }
     private void Start()
     {
@@ -26,13 +24,36 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
+        if (Input.GetButton("Fire1") && !Input.GetButton("Fire2"))
         {
             spaceship.FireMainWeapon();
         }
-        if (Input.GetMouseButton(1) && !Input.GetMouseButton(0))
+        if (Input.GetButton("Fire2") && !Input.GetButton("Fire1"))
         {
             spaceship.FireAltWeapon();
+        }
+        if (Input.GetButtonDown("Dash"))
+        {
+            var directionToDash = new Vector2();
+
+            if (Input.GetAxis("Horizontal") != 0)
+            {
+                directionToDash.x += Input.GetAxis("Horizontal");
+            }
+            if (Input.GetAxis("Vertical") != 0)
+            {
+                directionToDash.y += Input.GetAxis("Vertical");
+            }
+
+            spaceship.Dash(directionToDash);
+        }
+        if (Input.GetButtonDown("Shield"))
+        {
+            spaceship.ActivateShield();
+        }
+        if (Input.GetButtonDown("UltraAttack"))
+        {
+            spaceship.FireUltraAttack();
         }
     }
 
@@ -45,22 +66,36 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("EnemyMissile"))
+        if (collision.CompareTag("EnemyAmmo"))
         {
-            var explossion = Instantiate(PrefabsDictionary.GetParticlesPrefab(PrefabsDictionary.Particles.MissileExplosion), collision.transform.position, Quaternion.identity, transform);
-            explossion.GetComponent<ParticleSystem>().Play();
-            GetComponent<Rigidbody2D>().AddForceAtPosition(transform.position - collision.transform.position, collision.transform.position, ForceMode2D.Impulse);
+            TakeDamage();
         }
     }
 
-
-    private void OnCollisionStay2D(Collision2D collision)
+    private void TakeDamage()
     {
-        Debug.Log($"{collision.collider.name} Stay");
+        if (!spaceship.Invulnerability)
+        {
+            Death();
+        }
     }
 
+    public void Respawn() 
+    {
+        DOTween.Sequence().SetDelay(timeBeforeRespawn)
+        .OnComplete(() =>
+        {
+            spaceship.ShowSpaceship();
+        });
+    }
 
-
+    private void Death()
+    {
+        GameObject explosion = Instantiate(PrefabsDictionary.GetParticlesPrefab(PrefabsDictionary.Particles.EnemyExplosion), transform.position, Quaternion.identity);
+        explosion.GetComponent<ParticleSystem>().Play();
+        spaceship.HideSpaceship();
+        EventDelegate.RaiseOnPlayerDeath();
+    }
 }
 
 

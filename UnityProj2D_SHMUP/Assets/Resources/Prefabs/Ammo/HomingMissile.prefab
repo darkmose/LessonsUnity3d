@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9013190528074781731}
   - component: {fileID: 1076262877341501461}
   - component: {fileID: 3167126453141597593}
+  - component: {fileID: 8705800292454857915}
   m_Layer: 0
   m_Name: HomingMissile
   m_TagString: PlayerMissile
@@ -120,3 +121,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8705800292454857915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723600761357643465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44207e4db0f235442b7a3a745e0b0d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHoming: 1
+  timeToLive: 3
+  damage: 0
