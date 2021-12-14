@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -15,22 +16,50 @@ public class Player : MonoBehaviour
             gameCamera = Camera.main;
         }
         timeBeforeRespawn = 1f;
+
+        EventDelegate.OnStartBossFightEvent += OnStartBossFightHandler;
     }
-    private void Start()
+
+    private void OnStartBossFightHandler()
     {
+        GetComponent<ConstantForce2D>().enabled = false;
+    }
+
+    private void Start()
+    {        
         spaceship = shipObject.AddComponent<Spaceship>();
-        spaceship.InitializeSpaceship(Spaceship.SpaceshipType.Deltashifter, this.GetComponent<Rigidbody2D>());
+        Spaceship.SpaceshipType type = (Spaceship.SpaceshipType)PlayerPrefs.GetInt("indexSpaceship");
+        spaceship.InitializeSpaceship(type, this.GetComponent<Rigidbody2D>());
     }
 
     private void Update()
     {
-        if (Input.GetButton("Fire1") && !Input.GetButton("Fire2"))
+        MotionControl();
+    }
+
+    private void FixedUpdate()
+    {
+        spaceship.Move();
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("EnemyAmmo"))
+        {
+            TakeDamage();
+        }
+    }
+
+    private void MotionControl() 
+    {
+        if (Input.GetButton("Fire1"))
         {
             spaceship.FireMainWeapon();
         }
-        if (Input.GetButton("Fire2") && !Input.GetButton("Fire1"))
+        if (Input.GetButtonDown("UltraAttack"))
         {
-            spaceship.FireAltWeapon();
+            spaceship.FireUltraAttack();
         }
         if (Input.GetButtonDown("Dash"))
         {
@@ -51,26 +80,8 @@ public class Player : MonoBehaviour
         {
             spaceship.ActivateShield();
         }
-        if (Input.GetButtonDown("UltraAttack"))
-        {
-            spaceship.FireUltraAttack();
-        }
     }
 
-    private void FixedUpdate()
-    {
-        spaceship.Move();
-
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("EnemyAmmo"))
-        {
-            TakeDamage();
-        }
-    }
 
     private void TakeDamage()
     {

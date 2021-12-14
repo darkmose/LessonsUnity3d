@@ -9,10 +9,9 @@ public class Spaceship : MonoBehaviour
     private Rigidbody2D rigidbody2d;
     public enum SpaceshipType { Andromeda = 0, Spaceglader, Deltashifter };
     public SpaceshipType type;
+    public Animator animator;
     public Weapon mainWeapon;
-    public Weapon altWeapon;
     private GameObject mainWeapon_obj;
-    private GameObject altWeapon_obj;
     [SerializeField] private Shield shield;
     [SerializeField] private UltraAttack ultraAttack;
     private GameObject spaceshipBody;
@@ -76,11 +75,10 @@ public class Spaceship : MonoBehaviour
 
     private void Awake()
     {
+        animator = transform.Find("Body").GetComponent<Animator>();
         mainWeapon_obj = transform.Find("MainWeapon").gameObject;
-        altWeapon_obj = transform.Find("AltWeapon").gameObject;
 
         mainWeapon = mainWeapon_obj.AddComponent<Weapon>();
-        altWeapon = altWeapon_obj.AddComponent<Weapon>();
         shield = transform.Find("EnergyShield").GetComponent<Shield>();
         spaceshipBody = transform.Find("Body").gameObject;
         ultraAttack = transform.Find("UltraAttack").GetComponent<UltraAttack>();
@@ -143,26 +141,23 @@ public class Spaceship : MonoBehaviour
         {
             case SpaceshipType.Andromeda:
                 mainWeapon.InitializeWeapon(Weapon.WeaponType.SimpleTurret);
-                altWeapon.InitializeWeapon(Weapon.WeaponType.SingleMissle);
                 spaceshipSpeed = 7f;
                 shieldCapacity = 300f;
-                dashSpeed = 5f;
+                dashSpeed = 8f;
                 break;
 
             case SpaceshipType.Spaceglader:
-                mainWeapon.InitializeWeapon(Weapon.WeaponType.SimpleTurret);
-                altWeapon.InitializeWeapon(Weapon.WeaponType.SingleMissle);
+                mainWeapon.InitializeWeapon(Weapon.WeaponType.SpreadTurret);
                 spaceshipSpeed = 8f;
                 shieldCapacity = 200f;
-                dashSpeed = 7f;
+                dashSpeed = 10f;
                 break;
 
             case SpaceshipType.Deltashifter:
                 mainWeapon.InitializeWeapon(Weapon.WeaponType.SpreadTurret);
-                altWeapon.InitializeWeapon(Weapon.WeaponType.SingleMissle);
                 spaceshipSpeed = 10f;
                 shieldCapacity = 250f;
-                dashSpeed = 10f;
+                dashSpeed = 12f;
                 break;
         }
 
@@ -174,6 +169,8 @@ public class Spaceship : MonoBehaviour
     {
         rigidbody2d.AddForce(Vector2.right * spaceshipSpeed * Input.GetAxisRaw("Horizontal") * 15, ForceMode2D.Force);
         rigidbody2d.AddForce(Vector2.up * spaceshipSpeed * Input.GetAxisRaw("Vertical") * 15, ForceMode2D.Force);
+
+        animator.SetFloat("Blend", Input.GetAxis("Horizontal"));
     }
 
     public void Dash(Vector2 direction)
@@ -189,7 +186,6 @@ public class Spaceship : MonoBehaviour
             if (shieldEnergy == shieldCapacity)
             {
                 mainWeapon.damage = mainWeapon.baseDamage + 0.2f * mainWeapon.baseDamage;
-                altWeapon.damage = altWeapon.baseDamage + 0.2f * altWeapon.baseDamage;
             }
             Invulnerability = true;
             shieldOn = true;
@@ -213,7 +209,6 @@ public class Spaceship : MonoBehaviour
     {
         shieldOn = false;
         mainWeapon.damage = mainWeapon.baseDamage;
-        altWeapon.damage = altWeapon.baseDamage;
         invulnerabilityTime = 1f;
         Sequence seq = DOTween.Sequence();
         seq.AppendInterval(1)
@@ -257,14 +252,6 @@ public class Spaceship : MonoBehaviour
         if (!isRespawning && !ultraAttackOn)
         {
             mainWeapon.Fire();
-        }
-    }
-
-    public void FireAltWeapon()
-    {
-        if (!isRespawning && !ultraAttackOn)
-        {
-            altWeapon.Fire();
         }
     }
 
@@ -325,5 +312,6 @@ public class Spaceship : MonoBehaviour
         {
             ConsumeUltraEnergy(4f);
         }
+
     }
 }

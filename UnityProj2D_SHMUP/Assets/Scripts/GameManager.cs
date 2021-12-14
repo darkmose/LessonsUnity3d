@@ -9,11 +9,14 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] private Canvas continueMenu;
-    [SerializeField] private Player _player;
+    [SerializeField] private Canvas mainGUI;
+    [SerializeField] private Canvas bossGUI;
+    [SerializeField] private Canvas endGameGUI;
+    private Player _player;
     private Button continueYesButton;
     private Button continueNoButton;
 
-
+    
 
     private int lives;
     private int credits;
@@ -26,8 +29,11 @@ public class GameManager : MonoBehaviour
         }
         set 
         {
-            instance.score = value;
-            EventDelegate.RaiseOnScoreChanged(value);        
+            if (instance.score != value)
+            {
+                instance.score = value;
+                EventDelegate.RaiseOnScoreChanged(value);
+            }
         }
     }
     public static  int Credits
@@ -38,8 +44,11 @@ public class GameManager : MonoBehaviour
         }
         set
         {
-            instance.credits = value;
-            EventDelegate.RaiseOnCreditsChanged(value);
+            if (instance.credits != value)
+            {
+                instance.credits = value;
+                EventDelegate.RaiseOnCreditsChanged(value);
+            }
         }
     }
     public static int Lives
@@ -50,8 +59,11 @@ public class GameManager : MonoBehaviour
         }
         set
         {
-            instance.lives = value;
-            EventDelegate.RaiseOnHealthChanged(value);
+            if (instance.lives != value)
+            {
+                instance.lives = value;
+                EventDelegate.RaiseOnHealthChanged(value);
+            }
         }
     }
 
@@ -66,17 +78,66 @@ public class GameManager : MonoBehaviour
         Score = 0;
         Lives = 2;
 
-
+        EventDelegate.OnStartBossFightEvent += OnStartBossFightHandler;
         EventDelegate.OnEnemySpawnEvent += OnEnemySpawnEventHandler;
         EventDelegate.OnEnemyDeathEvent += OnEnemyDeathHandler;
         EventDelegate.OnPlayerDeathEvent += OnPlayerDeathHandler;
         EventDelegate.OnPlayerLivesOutEvent += OnPlayerLivesOutHandler;
         EventDelegate.OnBlockProjectileEvent += OnBlockProjectileHandler;
+        EventDelegate.OnBossTakeDamageEvent += OnBossTakeDamageHandler;
+        EventDelegate.OnBossDeathEvent += OnBossDeathHandler;
 
         continueYesButton = continueMenu.transform.Find("YesButton").gameObject.GetComponent<Button>();
         continueNoButton = continueMenu.transform.Find("NoButton").gameObject.GetComponent<Button>();
         continueYesButton.onClick.AddListener(OnContinueYes);
         continueNoButton.onClick.AddListener(OnContinueNo);
+    }
+
+    private void Start()
+    {
+        InitializePlayer();
+    }
+
+    private void InitializePlayer()
+    {
+        if (PlayerPrefs.GetInt("indexSpaceship") == 0)
+        {
+            var _pos = Camera.main.transform.position;
+            _pos.y -= 5f;
+            _pos.z = -1f;
+            GameObject playerGameObject = Instantiate(PrefabsDictionary.GetSpaceshipPrefab(PrefabsDictionary.Spaceships.Andromeda), _pos, Quaternion.identity);            
+            _player = playerGameObject.GetComponent<Player>();
+        }
+        else
+        {
+            var _pos = Camera.main.transform.position;
+            _pos.y -= 5f;
+            _pos.z = -1f;
+            GameObject playerGameObject = Instantiate(PrefabsDictionary.GetSpaceshipPrefab(PrefabsDictionary.Spaceships.Spaceglader), _pos, Quaternion.identity);
+            _player = playerGameObject.GetComponent<Player>();
+        }
+    }
+
+    private void OnBossDeathHandler()
+    {
+        DOTween.Sequence()
+            .SetDelay(0.5f)
+            .OnComplete(()=> 
+            {
+                ShowEndGameWindow();
+                endGameGUI.GetComponent<EndGameHandler>().InitText(true);
+            });
+    }
+
+    private void OnStartBossFightHandler()
+    {
+        mainGUI.gameObject.SetActive(false);
+        bossGUI.gameObject.SetActive(true);
+    }
+
+    private void OnBossTakeDamageHandler(float damage)
+    {
+        Score += 5;
     }
 
     private void OnBlockProjectileHandler()
@@ -118,9 +179,15 @@ public class GameManager : MonoBehaviour
         ShowEndGameWindow();
     }
 
+    public static int GetScore() 
+    {
+        return instance.score;
+    }
+
     private void ShowEndGameWindow()
     {
-        // DO
+        endGameGUI.gameObject.SetActive(true);
+        endGameGUI.GetComponent<EndGameHandler>().InitText(false);
     }
 
     private void OnPlayerDeathHandler()

@@ -11,6 +11,8 @@ TagManager:
   - BulletsRoot
   - Shield
   - Enemy
+  - Boss
+  - BossFightArea
   layers:
   - Default
   - TransparentFX
@@ -53,4 +55,25 @@ TagManager:
     locked: 0
   - name: Menu
     uniqueID: 1372137353
+    locked: 0
+  - name: Ground
+    uniqueID: 3336640581
+    locked: 0
+  - name: Road
+    uniqueID: 222639975
+    locked: 0
+  - name: Trees
+    uniqueID: 1850984807
+    locked: 0
+  - name: Player
+    uniqueID: 3595411989
+    locked: 0
+  - name: Enemies
+    uniqueID: 3050982591
+    locked: 0
+  - name: Bullets
+    uniqueID: 1303037113
+    locked: 0
+  - name: Explosions
+    uniqueID: 929047887
     locked: 0

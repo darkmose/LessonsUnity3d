@@ -61,6 +61,7 @@ public class ObjectPooler : MonoBehaviour
             Queue<GameObject> pool = instance.poolDictionary[tag];
             GameObject obj = pool.Dequeue();
             obj.SetActive(true);
+            obj.transform.parent = instance.transform;
             instance.poolDictionary[tag].Enqueue(obj);
             return obj;
         }

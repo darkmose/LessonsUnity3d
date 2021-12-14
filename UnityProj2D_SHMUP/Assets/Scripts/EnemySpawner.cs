@@ -15,6 +15,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Enemy.EnemyFireType enemyFireType;
     [SerializeField] private Enemy.BehaviourType behaviourType;
     private PrefabsDictionary.Enemies enemyPrefab;
+    [SerializeField] private bool dontShoot;
     [Space(15f)]
     [Header("---------== FIRE DIRECTION ==--------------------------------")]
     [Space(10f)]
@@ -35,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
     [Space(15f)]
     [Header("-----== DIRECT TYPE BEHAVIOUR ==-----------------------------")]
     [Space(10f)]
-    [SerializeField] private List<Vector2> move_points = new List<Vector2>();
+    [SerializeField] private List<Vector2> move_points;
     [Tooltip("-1 -- Infinity", order =1)]
     [Range(-1, 1000)]
     [SerializeField] private int directLoopCount = -1;
@@ -113,7 +114,7 @@ public class EnemySpawner : MonoBehaviour
                     
                     if (directLoopType == LoopType.Restart)
                     {
-                        int d_count = 0;
+                        int d_count;
                         if (linkFirstToLast)
                         {
                             move_points.Add(transform.position);
@@ -143,12 +144,13 @@ public class EnemySpawner : MonoBehaviour
                     enemy.moveParams_O.radius = radius;
                     enemy.moveParams_O.angleStep = angleStep;
                     enemy.moveParams_O.clockwise = clockwise;
-                    enemy.moveParams_O.loopsCount = directLoopCount;
-                    enemy.moveParams_O.loopType = directLoopType;
-                    enemy.moveParams_O.ease_scale = directEaseScale;
+                    enemy.moveParams_O.loopsCount = orbitalLoopCount;
+                    enemy.moveParams_O.loopType = orbitalLoopType;
+                    enemy.moveParams_O.ease_scale = orbitalEaseScale;
                     break;
             }
             enemy.InitializeEnemy(enemyType, enemyFireType, behaviourType);
+            enemy.dontShoot = dontShoot;
             if (enemy != null)
             {
                 EventDelegate.RaiseOnEnemySpawn();

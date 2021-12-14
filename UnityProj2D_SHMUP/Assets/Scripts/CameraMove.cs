@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class CameraMove : MonoBehaviour
 {
@@ -9,22 +11,28 @@ public class CameraMove : MonoBehaviour
     private Vector3 endPoint;
     private float gameplayTime = 180;
     private float timeCounter;
+    private bool allowMovement;
 
 
     private void Start()
     {
+        allowMovement = true;
         gameCamera = GetComponent<Camera>();
         startPoint = gameCamera.transform.position;
         endPoint = gameCamera.transform.position;
-        endPoint.y += 500f;
+        endPoint.y += 1000f;
+        EventDelegate.OnStartBossFightEvent += OnStartBossFightHandler;
     }
 
+    private void OnStartBossFightHandler()
+    {
+        allowMovement = false;
+    }
 
     private void Move()
     {
         if (timeCounter >= gameplayTime)
         {
-            OnEndMapEvent?.Invoke();
             return;
         }
         var normalizedTime = timeCounter / gameplayTime;
@@ -32,10 +40,11 @@ public class CameraMove : MonoBehaviour
         timeCounter += Time.deltaTime;
     }
 
-    event System.Action OnEndMapEvent;
-
     private void FixedUpdate()
     {
-        Move();
+        if (allowMovement)
+        {
+            Move();
+        }
     }
 }

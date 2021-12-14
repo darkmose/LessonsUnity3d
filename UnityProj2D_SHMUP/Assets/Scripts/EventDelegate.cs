@@ -24,12 +24,34 @@ public class EventDelegate : MonoBehaviour
     public static event System.Action <float,float> OnShieldEnergyChangedEvent;
     public static event System.Action <int> OnEnergyLevelChangedEvent;
     public static event System.Action <float,float> OnEnergyChangedEvent;
-    public static event System.Action <int>OnCreditsChangedEvent;
+    public static event System.Action <int> OnCreditsChangedEvent;
     public static event System.Action OnGameOverEvent;
     public static event System.Action OnShieldOffEvent;
     public static event System.Action OnUltraAttackOffEvent;
     public static event System.Action OnPlayerLivesOutEvent;
+    public static event System.Action <float> OnBossTakeDamageEvent;
+    public static event System.Action <float, float> OnBossHealthChangedEvent;
+    public static event System.Action OnBossDeathEvent;
+    public static event System.Action OnStartBossFightEvent;
 
+    public static void RaiseOnStartBossFight()
+    {
+        OnStartBossFightEvent?.Invoke();
+    }    
+
+    public static void RaiseOnBossTakeDamage(float damage)
+    {
+        OnBossTakeDamageEvent?.Invoke(damage);
+    }
+    public static void RaiseOnBossHealthChangedEvent(float hp, float fullHP)
+    {
+        OnBossHealthChangedEvent?.Invoke(hp, fullHP);
+    }
+
+    public static void RaiseOnBossDeath()
+    {
+        OnBossDeathEvent?.Invoke();
+    }
     public static void RaiseOnUltraAttackOff()
     {
         OnUltraAttackOffEvent?.Invoke();

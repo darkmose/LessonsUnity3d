@@ -71,26 +71,6 @@ public class Weapon : MonoBehaviour
         }
     }
 
-
-    private void FireMissile()
-    {
-        timeCounter += Time.deltaTime;
-
-        if (timeCounter >= 1 / fireRate)
-        {
-            for (int i = 0; i < firePoints.Count; i++)
-            {
-                var _ammo = ObjectPooler.GetPooledGameObject("Missile");
-                _ammo.transform.position = firePoints[i].position;
-                _ammo.transform.rotation = transform.rotation;
-                _ammo.transform.parent = transform.parent;
-                _ammo.GetComponent<Projectile>().damage = damage;
-                _ammo.GetComponent<Rigidbody2D>().velocity = (transform.up).normalized * bulletSpeed;
-            }
-            timeCounter = 0f;
-        }
-    }
-
     private void FireTurret() 
     {
         timeCounter += Time.deltaTime;
@@ -105,7 +85,6 @@ public class Weapon : MonoBehaviour
                         var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Blue");
                         _ammo.transform.position = firePoints[i].position;
                         _ammo.transform.rotation = transform.rotation;
-                        _ammo.transform.parent = transform.parent;
                         _ammo.GetComponent<Projectile>().damage = damage;
                         _ammo.GetComponent<Rigidbody2D>().velocity = (transform.up).normalized * bulletSpeed;
                     }
@@ -119,7 +98,6 @@ public class Weapon : MonoBehaviour
                         var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Blue");
                         _ammo.transform.position = firePoints[i].position;
                         _ammo.transform.rotation = quaternion;
-                        _ammo.transform.parent = transform.parent;
                         _ammo.GetComponent<Projectile>().damage = damage;
                         _ammo.GetComponent<Rigidbody2D>().velocity = localFireDirection * bulletSpeed;
                     }
@@ -133,13 +111,7 @@ public class Weapon : MonoBehaviour
     public void Fire()
     {
 
-        if (type == WeaponType.SingleMissle || type == WeaponType.HomingMissle)
-        {
-            //FireMissile();
-        }
-        else
-        {
             FireTurret();
-        }
+        
     }
 }

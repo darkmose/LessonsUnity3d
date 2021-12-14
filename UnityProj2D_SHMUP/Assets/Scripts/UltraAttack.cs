@@ -7,10 +7,7 @@ using DG.Tweening;
 public class UltraAttack : MonoBehaviour
 {
     [SerializeField] private enum UltraAttackType { Laser };
-    [SerializeField] private UltraAttackType attackType;
     [SerializeField] private Color[] ultra_colors;
-    //[SerializeField] private Color ultra_2_level;
-    //[SerializeField] private Color ultra_3_level;
     private new BoxCollider2D collider;
     private SpriteRenderer sprite;
     private int attackLevel;
@@ -87,17 +84,26 @@ public class UltraAttack : MonoBehaviour
                 collision.gameObject.SetActive(false);
                 EventDelegate.RaiseOnBlockProjectileEvent();
                 break;
+            case "Boss":
+                collision.GetComponent<BossHandler>().TakeDamage(100);
+                break;
+
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        switch (collision.tag)
         {
-            var damage = 10 * (attackLevel+1);
-            collision.GetComponent<Enemy>().TakeDamage(damage);
-        }   
-        
-    }
+            case "Enemy":
+                var damage = 10 * (attackLevel + 1);
+                collision.GetComponent<Enemy>().TakeDamage(damage);
+                break;
 
+            case "Boss":
+                damage = 10 * (attackLevel + 1);
+                collision.GetComponent<BossHandler>().TakeDamage(damage);
+                break;
+        }        
+    }
 }

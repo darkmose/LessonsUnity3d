@@ -46,6 +46,9 @@ public class PrefabsDictionary : MonoBehaviour
         particlesPrefabs.Add(Particles.EnemyExplosion, Resources.Load<GameObject>("Prefabs/Particles/ExplosionEnemyParticles"));
         particlesPrefabs.Add(Particles.MissileExplosion, Resources.Load<GameObject>("Prefabs/Particles/ExplosionMissileParticles"));
 
+        spaceshipPrefabs.Add(Spaceships.Andromeda, Resources.Load<GameObject>("Prefabs/Spaceships/Player/Andromeda"));
+        spaceshipPrefabs.Add(Spaceships.Spaceglader, Resources.Load<GameObject>("Prefabs/Spaceships/Player/Spaceglader"));
+
     }
 
     public static GameObject GetWeaponPrefab(Weapons name) 

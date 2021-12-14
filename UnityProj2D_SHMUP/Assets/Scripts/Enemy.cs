@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     public Vector2 fireDirection;
 
     private Vector2[] movePoints;
+    public bool dontShoot;
     
     private new Rigidbody2D rigidbody;
     
@@ -52,14 +53,13 @@ public class Enemy : MonoBehaviour
     };
     public MoveParamsD_Type moveParams_D;
 
-    private bool isMove;
     private float speed = 10f;
     private float firerate = 1f;
     private float hp = 100;
-    private float defense;
     private float timeCounter;
     private float bulletSpeed;
     private int scoreGain;
+    private float cooldownCounter;
 
 
     public Enemy() 
@@ -117,7 +117,6 @@ public class Enemy : MonoBehaviour
         {
             case EnemyType.BigBoy:
                 hp = 300f;
-                defense = 4f;
                 bulletSpeed = 40;
                 speed = 2f;
                 firerate = 0.5f;
@@ -126,7 +125,6 @@ public class Enemy : MonoBehaviour
 
             case EnemyType.Bluster:
                 hp = 250f;
-                defense = 4f;
                 bulletSpeed = 30;
                 speed = 8f;
                 firerate = 4f;
@@ -135,7 +133,6 @@ public class Enemy : MonoBehaviour
 
             case EnemyType.RedKiller:
                 hp = 200f;
-                defense = 4f;
                 bulletSpeed = 30;
                 speed = 8f;
                 firerate = 3f;
@@ -187,9 +184,19 @@ public class Enemy : MonoBehaviour
     public void FireBullet()
     {
         timeCounter += Time.deltaTime;
-
+        cooldownCounter += Time.deltaTime;
         if (timeCounter >= 1 / firerate)
         {
+            if (cooldownCounter > 3)
+            {
+                DOTween.Sequence()
+                    .SetDelay(Random.Range(1, 3))
+                    .OnComplete(()=> 
+                    {
+                        cooldownCounter = 0f;                    
+                    });
+                return;
+            }
             switch (fireType)
             {
                 case EnemyFireType.Radian:
@@ -200,7 +207,6 @@ public class Enemy : MonoBehaviour
                         var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Red");
                         _ammo.transform.position = firePoints[i].position;
                         _ammo.transform.rotation = quaternion;
-                        _ammo.transform.parent = transform.parent;
                         _ammo.tag = "EnemyAmmo";
                         _ammo.GetComponent<Rigidbody2D>().velocity = localFireDirection * bulletSpeed;
                     }
@@ -211,7 +217,6 @@ public class Enemy : MonoBehaviour
                         var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Red");
                         _ammo.transform.position = firePoints[i].position;
                         _ammo.transform.rotation = transform.rotation;
-                        _ammo.transform.parent = transform.parent;
                         _ammo.tag = "EnemyAmmo";
                         _ammo.GetComponent<Rigidbody2D>().velocity = (fireDirection).normalized * bulletSpeed;
                     }
@@ -223,7 +228,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage) 
     {
-        hp -= damage/defense;
+        hp -= damage;
 
         if (hp<=0)
         {
@@ -248,7 +253,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-
+            
         }
         if (collision.CompareTag("PlayerAmmo"))
         {
@@ -266,8 +271,11 @@ public class Enemy : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {        
-        FireBullet();     
+    {
+        if (!dontShoot)
+        {
+            FireBullet();
+        }    
     }
 
 }
