@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         InitializePlayer();
+        EventDelegate.RaiseOnStartGame();
     }
 
     private void InitializePlayer()

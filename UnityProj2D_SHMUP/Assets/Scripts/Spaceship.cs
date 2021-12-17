@@ -185,6 +185,7 @@ public class Spaceship : MonoBehaviour
         {
             if (shieldEnergy == shieldCapacity)
             {
+                AudioManager.PlaySound("Full_Shield");
                 mainWeapon.damage = mainWeapon.baseDamage + 0.2f * mainWeapon.baseDamage;
             }
             Invulnerability = true;
@@ -200,6 +201,7 @@ public class Spaceship : MonoBehaviour
             if (ultraEnergy > 0.5 * ultraEnergyCapacity || ultraEnergyLevel >= 1)
             {
                 ultraAttackOn = true;
+                AudioManager.PlaySound("UltraAttack");
                 ultraAttack.StartAttack();
             }
         }  

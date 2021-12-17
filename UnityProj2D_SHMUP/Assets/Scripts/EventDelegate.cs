@@ -33,14 +33,27 @@ public class EventDelegate : MonoBehaviour
     public static event System.Action <float, float> OnBossHealthChangedEvent;
     public static event System.Action OnBossDeathEvent;
     public static event System.Action OnStartBossFightEvent;
+    public static event System.Action OnStartGameEvent;
 
     public static void RaiseOnStartBossFight()
     {
+        AudioManager.StopMusic();
+        AudioManager.PlayMusic("Epic_Boss_Fight");
+
         OnStartBossFightEvent?.Invoke();
+    }    
+    
+    public static void RaiseOnStartGame()
+    {
+        AudioManager.StopMusic();
+        AudioManager.PlayMusic("GameMusic");
+
+        OnStartGameEvent?.Invoke();
     }    
 
     public static void RaiseOnBossTakeDamage(float damage)
     {
+        AudioManager.PlaySound("EnemyTakeDamage");
         OnBossTakeDamageEvent?.Invoke(damage);
     }
     public static void RaiseOnBossHealthChangedEvent(float hp, float fullHP)
@@ -50,6 +63,7 @@ public class EventDelegate : MonoBehaviour
 
     public static void RaiseOnBossDeath()
     {
+        AudioManager.PlaySound("Explosion");
         OnBossDeathEvent?.Invoke();
     }
     public static void RaiseOnUltraAttackOff()
@@ -70,6 +84,7 @@ public class EventDelegate : MonoBehaviour
 
     public static void RaiseOnEnergyLevelChanged(int level)
     {
+        AudioManager.PlaySound("EnergyLvlUp");
         OnEnergyLevelChangedEvent?.Invoke(level);
     }
     public static void RaiseOnEnergyChanged(float energy, float fullEnergy)
@@ -78,6 +93,7 @@ public class EventDelegate : MonoBehaviour
     }
     public static void RaiseOnGameOverEvent()
     {
+        AudioManager.StopMusic();
         OnGameOverEvent?.Invoke();
     }
     public static void RaiseOnShieldEnergyChanged(float energy, float fullEnergy)
@@ -104,10 +120,12 @@ public class EventDelegate : MonoBehaviour
 
     public static void RaiseOnEnemyDeath(int scoreGain) 
     {
+        AudioManager.PlaySound("EnemyExplosion");
         OnEnemyDeathEvent?.Invoke(scoreGain);
     }
     public static void RaiseOnPlayerDeath() 
     {
+        AudioManager.PlaySound("Explosion");
         OnPlayerDeathEvent?.Invoke();
     }
     public static void RaiseOnPlayerTakeDamage() 
@@ -116,11 +134,13 @@ public class EventDelegate : MonoBehaviour
     }
     public static void RaiseOnEnemyTakeDamage(float damage) 
     {
+        AudioManager.PlaySound("EnemyTakeDamage");
         OnEnemyTakeDamageEvent?.Invoke(damage);
     }
 
     public static void RaiseOnBlockProjectileEvent() 
     {
+        AudioManager.PlaySound("EnemyTakeDamage");
         OnBlockProjectileEvent?.Invoke();
     }
 

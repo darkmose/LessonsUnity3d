@@ -13,6 +13,7 @@ public class Weapon : MonoBehaviour
     private float timeCounter = 0f;
     private List<Transform> firePoints;
     private Transform firePointsRoot;
+    private AudioClip fireSound;
 
     private void Awake()
     {
@@ -27,7 +28,7 @@ public class Weapon : MonoBehaviour
         {
             firePoints.Add(firePointsRoot.GetChild(i)); 
         }
-
+        fireSound = AudioManager.GetAudio("Shoot");
         damage = baseDamage;
     }
 
@@ -88,6 +89,7 @@ public class Weapon : MonoBehaviour
                         _ammo.GetComponent<Projectile>().damage = damage;
                         _ammo.GetComponent<Rigidbody2D>().velocity = (transform.up).normalized * bulletSpeed;
                     }
+                    AudioManager.PlayClip(fireSound);
                     timeCounter = 0f;
                     break;
                 case WeaponType.SpreadTurret:
@@ -101,6 +103,7 @@ public class Weapon : MonoBehaviour
                         _ammo.GetComponent<Projectile>().damage = damage;
                         _ammo.GetComponent<Rigidbody2D>().velocity = localFireDirection * bulletSpeed;
                     }
+                    AudioManager.PlayClip(fireSound);
                     timeCounter = 0f;
                     break;
             }

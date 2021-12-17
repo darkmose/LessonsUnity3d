@@ -117,7 +117,7 @@ public class Enemy : MonoBehaviour
         {
             case EnemyType.BigBoy:
                 hp = 300f;
-                bulletSpeed = 40;
+                bulletSpeed = 10;
                 speed = 2f;
                 firerate = 0.5f;
                 scoreGain = Random.Range(300,500);
@@ -125,17 +125,17 @@ public class Enemy : MonoBehaviour
 
             case EnemyType.Bluster:
                 hp = 250f;
-                bulletSpeed = 30;
-                speed = 8f;
-                firerate = 4f;
+                bulletSpeed = 13;
+                speed = 3f;
+                firerate = 2f;
                 scoreGain = Random.Range(400, 600);
                 break;
 
             case EnemyType.RedKiller:
                 hp = 200f;
-                bulletSpeed = 30;
-                speed = 8f;
-                firerate = 3f;
+                bulletSpeed = 15;
+                speed = 4f;
+                firerate = 1.5f;
                 scoreGain = Random.Range(200, 800);
                 break;
         }
@@ -228,6 +228,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage) 
     {
+        AudioManager.PlaySound("EnemyTakeDamage");
         hp -= damage;
 
         if (hp<=0)
@@ -236,7 +237,6 @@ public class Enemy : MonoBehaviour
             Death();
         }
 
-        Debug.Log("EnemyTakeDamage");
         EventDelegate.RaiseOnEnemyTakeDamage(damage);
     }
 
