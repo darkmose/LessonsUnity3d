@@ -17,13 +17,22 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance != null)
+        {
+            if (instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        else
+        {
+            instance = this;
+        }
         _sounds = InitializeSounds();
         _musics = InitializeMusics();
 
         Debug.Log($"_sounds: {_sounds.Count}");
         Debug.Log($"_musics: {_musics.Count}");
-
     }
 
     private void Start()

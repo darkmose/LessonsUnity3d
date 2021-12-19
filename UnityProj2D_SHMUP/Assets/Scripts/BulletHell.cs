@@ -32,8 +32,8 @@ public class BulletHell : MonoBehaviour
         private Vector2 moveDirection;
         [SerializeField] private bool isRadian;
 
-        private Vector2[] directions;
-        private GameObject[] objects;
+        [HideInInspector] public Vector2[] directions;
+        [HideInInspector] public GameObject[] objects;
 
         public IEnumerator Fire()
         {
@@ -95,7 +95,7 @@ public class BulletHell : MonoBehaviour
     { 
     }
 
-    
+
 
     private void Start()
     {
@@ -124,7 +124,17 @@ public class BulletHell : MonoBehaviour
 
     private void OnDestroy()
     {
+        for (int i = 0; i < bulletSets.Count; i++)
+        {
+            for (int k = 0; k < bulletSets[i].objects.Length; k++)
+            {
+                bulletSets[i].objects[k].SetActive(false);
+                Debug.Log("false");
+            }
+        }
+
         StopBulletHell();
+        this.StopAllCoroutines();
     }
 
     [ContextMenu("Start BulletHell")]
@@ -136,7 +146,6 @@ public class BulletHell : MonoBehaviour
     public void StopBulletHell() 
     {
         cyclicSpawn = false;
-        this.StopAllCoroutines();
     }
 
 

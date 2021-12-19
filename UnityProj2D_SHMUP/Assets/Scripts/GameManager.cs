@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas mainGUI;
     [SerializeField] private Canvas bossGUI;
     [SerializeField] private Canvas endGameGUI;
+    [SerializeField] private TextMeshProUGUI creditsLeft;
     private Player _player;
     private Button continueYesButton;
     private Button continueNoButton;
@@ -87,8 +89,8 @@ public class GameManager : MonoBehaviour
         EventDelegate.OnBossTakeDamageEvent += OnBossTakeDamageHandler;
         EventDelegate.OnBossDeathEvent += OnBossDeathHandler;
 
-        continueYesButton = continueMenu.transform.Find("YesButton").gameObject.GetComponent<Button>();
-        continueNoButton = continueMenu.transform.Find("NoButton").gameObject.GetComponent<Button>();
+        continueYesButton = continueMenu.transform.Find("InteractiveElements").Find("YesButton").gameObject.GetComponent<Button>();
+        continueNoButton = continueMenu.transform.Find("InteractiveElements").Find("NoButton").gameObject.GetComponent<Button>();
         continueYesButton.onClick.AddListener(OnContinueYes);
         continueNoButton.onClick.AddListener(OnContinueNo);
     }
@@ -149,10 +151,11 @@ public class GameManager : MonoBehaviour
     private void OnPlayerLivesOutHandler()
     {
         DOTween.Sequence()
-            .AppendInterval(0.5f)
+            .AppendInterval(1f)
             .OnComplete(() =>
             {
                 Time.timeScale = 0;
+                creditsLeft.text = $"You have {Credits} credits";
                 continueMenu.gameObject.SetActive(true);
                 if (credits <= 0)
                 {
@@ -177,6 +180,7 @@ public class GameManager : MonoBehaviour
 
     private void OnContinueNo() 
     {
+        continueMenu.gameObject.SetActive(false);
         ShowEndGameWindow();
     }
 
@@ -187,6 +191,7 @@ public class GameManager : MonoBehaviour
 
     private void ShowEndGameWindow()
     {
+        Time.timeScale = 0f;
         endGameGUI.gameObject.SetActive(true);
         endGameGUI.GetComponent<EndGameHandler>().InitText(false);
     }

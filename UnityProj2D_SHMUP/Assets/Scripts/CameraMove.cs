@@ -9,7 +9,7 @@ public class CameraMove : MonoBehaviour
     [SerializeField] private Camera gameCamera;
     private Vector3 startPoint;
     private Vector3 endPoint;
-    private float gameplayTime = 180;
+    private float gameplayTime = 300;
     private float timeCounter;
     private bool allowMovement;
 

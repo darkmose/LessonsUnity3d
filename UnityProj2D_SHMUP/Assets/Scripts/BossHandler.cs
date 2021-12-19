@@ -19,6 +19,7 @@ public class BossHandler : MonoBehaviour
     public string bossName;
     private float fullBossHP;
     private float bossHP;
+    private bool invulnerability;
 
     public float FullBossHP { get; }
     public float BossHP 
@@ -50,6 +51,7 @@ public class BossHandler : MonoBehaviour
 
     private void Awake()
     {
+        invulnerability = true;
         EventDelegate.OnStartBossFightEvent += OnStartBossFightHandler;
         fullBossHP = 0f;
 
@@ -65,6 +67,7 @@ public class BossHandler : MonoBehaviour
 
     private void OnStartBossFightHandler()
     {
+        invulnerability = false;
         Vector3 pointToShowBoss = transform.Find("BossSprite").position;
         pointToShowBoss -= Vector3.up * 10f;
         DOTween.Sequence()
@@ -96,29 +99,33 @@ public class BossHandler : MonoBehaviour
         currentPhase.bulletHell.StartBulletHell();
     }
 
-    public void TakeDamage(float damage) 
+    public void TakeDamage(float damage)
     {
-        EventDelegate.RaiseOnBossTakeDamage(damage);
-        BossHP -= damage;
-        if (bossHP <= 0)
+        if (!invulnerability)
         {
-            Death();
-            return;
-        }
-        float takenBossHP = fullBossHP - bossHP;
-        int nextPhase = 0;
-
-        for (int i = 0; i < phases.Length; i++)
-        {
-            if (takenBossHP > phases[i].phaseHP)
+            EventDelegate.RaiseOnBossTakeDamage(damage);
+            BossHP -= damage;
+            Debug.Log(bossHP);
+            if (bossHP <= 0)
             {
-                nextPhase = i+1;
+                Death();
+                return;
             }
-        }
-        if (nextPhase > 0)
-        {
-            ChangePhase(nextPhase);
-        }
+            float takenBossDamage = fullBossHP - bossHP;
+            int nextPhase = 0;
+
+            for (int i = 0; i < phases.Length - 1 ; i++)
+            {
+                if (takenBossDamage >= phases[i].phaseHP)
+                {
+                    nextPhase = i + 1;
+                }
+            }
+            if (nextPhase > 0)
+            {
+                ChangePhase(nextPhase);
+            }
+        }        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -138,10 +145,12 @@ public class BossHandler : MonoBehaviour
         {
             phases[phase - 1].bulletHell.StopBulletHell();
             currentPhase = phases[phase];
+            currentPhase.bulletHell.StartBulletHell();
         }
         else
         {
             currentPhase = phases[phase];
+            currentPhase.bulletHell.StartBulletHell();
         }
     }
 

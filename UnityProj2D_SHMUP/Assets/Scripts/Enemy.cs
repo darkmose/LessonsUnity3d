@@ -204,7 +204,7 @@ public class Enemy : MonoBehaviour
                     {
                         Vector2 localFireDirection = (firePoints[i].position - transform.position).normalized;
                         var quaternion = Quaternion.LookRotation(Vector3.forward, localFireDirection);                        
-                        var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Red");
+                        var _ammo = ObjectPooler.GetPooledGameObject("Bullet_Green");
                         _ammo.transform.position = firePoints[i].position;
                         _ammo.transform.rotation = quaternion;
                         _ammo.tag = "EnemyAmmo";

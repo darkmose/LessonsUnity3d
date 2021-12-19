@@ -38,6 +38,9 @@ public class MainMenuHandler : MonoBehaviour
         var musicMute = PlayerPrefs.GetInt("MusicMute") == 1;
         AudioManager.AudioMute(audioMute);
         AudioManager.MusicMute(musicMute);
+        audioOff.isOn = audioMute;
+        musicOff.isOn = musicMute;
+        AudioManager.StopMusic();
         AudioManager.PlayMusic("Poseidon's");
     }
 

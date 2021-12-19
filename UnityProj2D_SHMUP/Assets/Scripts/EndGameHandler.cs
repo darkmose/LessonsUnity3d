@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class EndGameHandler : MonoBehaviour
 {
@@ -31,11 +32,15 @@ public class EndGameHandler : MonoBehaviour
 
     public void ExitButton()
     {
+        AudioManager.StopMusic();
         Application.Quit();  
     }
 
     public void MainMenuButton()
     {
+        Time.timeScale = 1;
+        AudioManager.StopMusic();
+        DOTween.KillAll();
         SceneManager.LoadScene("MainMenu");
     }
 
