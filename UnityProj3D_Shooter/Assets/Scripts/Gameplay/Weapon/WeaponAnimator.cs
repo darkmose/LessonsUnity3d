@@ -11,8 +11,6 @@ public class WeaponAnimator : MonoBehaviour
         if (TryGetComponent(out Animator animator))
         {
             _animator = animator;
-            Debug.Log(_animator != null);
-
         }
     }
 
@@ -20,4 +18,5 @@ public class WeaponAnimator : MonoBehaviour
     {
         _animator.SetTrigger(AnimatorFireTriggerName);    
     }
+
 }

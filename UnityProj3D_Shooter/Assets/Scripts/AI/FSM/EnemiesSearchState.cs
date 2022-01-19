@@ -12,7 +12,7 @@
         {
             if (_aIShared.Weapon.HasWeapon)
             {
-                if (_aIShared.Navigation.IsEnemySpied == false)
+                if (_aIShared.Navigation.IsEnemiesSpied == false)
                 {
                     if (_aIShared.Navigation.IsMovedToPoint == false)
                     {

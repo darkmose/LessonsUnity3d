@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1771351191282877665}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.022, z: 0.141}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 1692937714813399629}
   m_Father: {fileID: 0}
@@ -45,7 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8cbfc3a600f664181baac546d2e876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownerName: 
   npcIsOwner: 1
+  _weaponAnimator: {fileID: 0}
+  index: 0
   iKLHand: {fileID: 5739353242481213466}
   iKRHand: {fileID: 4787557632947134600}
 --- !u!135 &8821955376766805364
@@ -59,7 +62,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1771438379916957281
 GameObject:

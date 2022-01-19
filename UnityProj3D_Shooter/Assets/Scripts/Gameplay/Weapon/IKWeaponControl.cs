@@ -28,7 +28,6 @@ public class IKWeaponControl : MonoBehaviour
     public void IKControlOn() 
     {
         _iKControl = true;
-        Debug.Log("IK On");
     }
 
     public void IKControlOff() 
@@ -41,18 +40,15 @@ public class IKWeaponControl : MonoBehaviour
     {
         if (_iKControl)
         {
-            Debug.Log("[TakeWeaponViaIK] _ikControl = true");
-            if (true)//_iKRHandPoint != null)
+            if (_iKRHandPoint != null)
             {
-                Debug.Log("ikRightHand != null");
                 _animator?.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
                 _animator?.SetIKPosition(AvatarIKGoal.RightHand, _iKRHandPoint.position);
                 _animator?.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
                 _animator?.SetIKRotation(AvatarIKGoal.RightHand, _iKRHandPoint.rotation);
             }
-            if (true)//_iKLHandPoint != null)
+            if (_iKLHandPoint != null)
             {
-                Debug.Log("ikLeftHand != null");
                 _animator?.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
                 _animator?.SetIKPosition(AvatarIKGoal.LeftHand, _iKLHandPoint.position);
                 _animator?.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
@@ -71,7 +67,6 @@ public class IKWeaponControl : MonoBehaviour
     private void OnAnimatorIK(int layerIndex)
     {
         TakeWeaponViaIK();
-        Debug.Log("OnAnimatorIK");
     }
 
 }

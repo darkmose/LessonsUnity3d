@@ -36,6 +36,7 @@ namespace FSM
     {
         private Dictionary<States, IState> _states;
         private IState _currentState;
+        public States CurrentState => _currentState.State;
 
         public void SwitchStateTo(States state)
         {
@@ -47,7 +48,7 @@ namespace FSM
             }
             else
             {
-                Debug.Log($"State {state}, doesn't exist!");
+                //Debug.Log($"State {state}, doesn't exist!");
             }
         }
 
@@ -60,7 +61,7 @@ namespace FSM
         {
             if (_states.ContainsKey(state.State))
             {
-                Debug.Log($"State {state.State} already exist!");
+                //Debug.Log($"State {state.State} already exist!");
             }
             else
             {
@@ -70,7 +71,7 @@ namespace FSM
         public void StateUpdate() 
         {
             _currentState?.OnStateStay();
-            Debug.Log($"State Update: State {_currentState.State}");
+            //Debug.Log($"State Update: State {_currentState.State}");
         }
     }
 }

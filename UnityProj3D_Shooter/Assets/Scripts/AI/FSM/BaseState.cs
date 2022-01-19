@@ -19,12 +19,10 @@ namespace FSM
 
         public virtual void OnEnterState()
         {
-            Debug.Log($"[{this}] On Enter State");
         }
 
         public virtual void OnExitState()
         {
-            Debug.Log($"[{this}] On Exit State");
         }
 
         public abstract void OnStateStay();

@@ -15,7 +15,7 @@
 
         public override void OnStateStay()
         {
-            if (_aIShared.Navigation.IsEnemySpied)
+            if (_aIShared.Navigation.IsEnemiesSpied)
             {
                 _aIShared.Weapon.FireTarget(_aIShared.Navigation.EnemyTarget);
             }

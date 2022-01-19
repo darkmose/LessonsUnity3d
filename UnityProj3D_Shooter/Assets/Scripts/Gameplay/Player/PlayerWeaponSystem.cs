@@ -6,9 +6,9 @@ using GameEvents;
 
 public class PlayerWeaponSystem : BaseWeaponSystem
 {
-    private const int BulletsTakenFromSameWeapon = 20;
     public override bool HasWeapon => _weaponList?.Count > 0;
     public override bool HasAmmo => _currentWeapon?.BulletsCount > 0;
+    public int WeaponCount => _weaponList.Count;
     public override bool IsBurstShooting 
     { 
         get
@@ -23,9 +23,9 @@ public class PlayerWeaponSystem : BaseWeaponSystem
             }
         }
     }
-    [SerializeField] private Transform _weaponInventory;
-    [SerializeField] private WeaponAnimator _weaponAnimator;
-    [SerializeField] private IKWeaponControl _iKWeaponControl; 
+
+    private const string AK74ScriptPrefabName = "AK74_ScriptOnly";
+    private const string M1911ScriptPrefabName = "M1911_ScriptOnly";
     private List<Weapon> _weaponList;
     private OnWeaponChangedEvent _onWeaponChangedEvent;
 
@@ -38,7 +38,8 @@ public class PlayerWeaponSystem : BaseWeaponSystem
 
     public override void TakeAmmo(Ammunition ammunition)
     {
-        
+        _currentWeapon?.AddAmmunition(Ammunition.BulletsCount);
+        Destroy(ammunition.gameObject);
     }
 
     public override void TakeWeapon(Weapon weapon)
@@ -47,38 +48,76 @@ public class PlayerWeaponSystem : BaseWeaponSystem
         {
             if (weaponItem.WeaponModel.Equals(weapon.WeaponModel))
             {
-                weaponItem.AddAmmunition(BulletsTakenFromSameWeapon);
-                Destroy(weapon.gameObject);
                 return;
             }
         }
-
-        weapon.gameObject.transform.SetParent(_weaponInventory);
-        weapon.transform.SetPositionAndRotation(_weaponInventory.position, _weaponInventory.rotation);
-        if (weapon.TryGetComponent(out SphereCollider sphereCollider))
+        GameObject weaponPrefab = null;
+        switch (weapon.WeaponModel)
         {
-            sphereCollider.enabled = false;
+            case Weapon.WeaponType.AK74:
+                {
+                    weaponPrefab = PrefabDictionary.GetWeaponPrefab(AK74ScriptPrefabName);
+                }
+                break;
+            case Weapon.WeaponType.M1911:
+                {
+                    weaponPrefab = PrefabDictionary.GetWeaponPrefab(M1911ScriptPrefabName);
+                }
+                break;
         }
-        weapon.InitializeWeaponAnimator(_weaponAnimator);
-        _weaponList.Add(weapon);
+        var weaponObject = Instantiate(weaponPrefab, this.transform) as GameObject;
+        weaponObject.transform.localPosition = Vector3.zero;
+        weaponObject.transform.rotation = transform.rotation;
+        var weaponScript = weaponObject.GetComponent<Weapon>();
+        weaponScript.InitializeWeapon(weapon.WeaponModel);
+        weaponScript.ownerName = gameObject.name;
+        _weaponList.Add(weaponScript);
+        Destroy(weapon.gameObject);
+        weaponScript.index = _weaponList.Count - 1;
         var lastWeaponIndex = _weaponList.Count - 1;
         ChangeWeapon(lastWeaponIndex);
     }
 
     public void ChangeWeapon(int weaponIndex) 
     {
-        _currentWeapon?.gameObject.SetActive(false);
-        var index = Mathf.Clamp(weaponIndex, 0, (_weaponList.Count-1));
         _currentWeapon = _weaponList[weaponIndex];
-        _currentWeapon.gameObject.SetActive(true);
         _currentWeapon.npcIsOwner = false;
-        _iKWeaponControl.ReinitializeIKs(_currentWeapon.iKLHand, _currentWeapon.iKRHand);
-        _iKWeaponControl.IKControlOn();
         _onWeaponChangedEvent.bulletCount = _currentWeapon.BulletsCount;
         _onWeaponChangedEvent.bulletInMagazine = _currentWeapon.BulletsInMagazine;
         _onWeaponChangedEvent.weaponType = _currentWeapon.WeaponModel;
         EventsAgregator.Post<OnWeaponChangedEvent>(this, _onWeaponChangedEvent);
+    }
 
+    public void NextWeapon() 
+    {
+        if (_currentWeapon != null)
+        {
+            int nextIndex = _currentWeapon.index + 1;
+            if (_weaponList.Count - 1 >= nextIndex)
+            {
+                ChangeWeapon(nextIndex);
+            }
+            else
+            {
+                ChangeWeapon(0);
+            }
+        }        
+    }
+
+    public void PrevWeapon() 
+    {
+        if (_currentWeapon != null)
+        {
+            int prevIndex = _currentWeapon.index - 1;
+            if (prevIndex >= 0)
+            {
+                ChangeWeapon(prevIndex);
+            }
+            else
+            {
+                ChangeWeapon(WeaponCount-1);
+            }
+        }
     }
 
 

@@ -1,35 +1,56 @@
 ﻿using GameEvents;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     #region CONST PARAMS
-    private const int AK74FireRate = 7;
+    private const int AK74FireRate = 3;
     private const int AK74StartBulletCount = 30;
     private const int AK74BulletsInMagazine = 30;
-    private const int AK74Damage = 3;
+    private const int AK74Damage = 25;
     private const int AK74MagazineCapacity = 30;
     private const float ViewPortCameraCenter = 0.5f;
-    private const int M1911FireRate = 4;
+    private const int M1911FireRate = 2;
     private const int M1911StartBulletCount = 20;
     private const int M1911BulletsInMagazine = 9;
-    private const int M1911Damage = 10;
+    private const int M1911Damage = 25;
     private const int M1911MagazineCapacity = 9;
     private const string PlayersLayerName = "Player";
-    private const float ShootMaxDistance = 10f;
-    private const float PawAttackMaxDistance = 1f;
-    private const int PawAttackDamage = 5;
+    private const float ShootMaxDistance = 300f;
+    private const int MaximumCooldownTime = 5;
+    private const string Ak74FireSoundName = "AK74Fire";
+    private const string M1911FireSoundName = "M1911Fire";
+    private const string ReloadSoundName = "ReloadSound";
+    private const string EnemyTagName = "Enemy";
     #endregion
 
-    public bool npcIsOwner = true; 
+    public string ownerName = "";
+    public bool npcIsOwner = true;
     private WeaponType _weaponType = WeaponType.None;
     public WeaponType WeaponModel => _weaponType;
     public WeaponAnimator _weaponAnimator;
-    public int BulletsCount => _bulletsCount;
+    public int BulletsCount
+    {
+        get 
+        {
+            if (isThrowingWeapon)
+            {
+                return _throwingWeaponCount;
+            }
+            else
+            {
+                return _bulletsCount;
+            }
+        }
+        private set
+        {
+            _bulletsCount = value;
+        }
+    }
     public int BulletsInMagazine => _bulletsInMagazine;
     public bool BurstShooting { get; private set; }
+    public int index = 0;
+    private int _throwingWeaponCount = 0;
 
     private float _fireRate;
     private int _bulletsCount;
@@ -37,28 +58,22 @@ public class Weapon : MonoBehaviour
     private int _magazineCapacity;
     private int _damage;
     private float _coolDownTime;
+    private bool isThrowingWeapon = false;
     public Transform iKLHand;
     public Transform iKRHand;
-    private Vector3 _cameraViewportCenter;
+    private Vector3 _cameraViewportCenter = new Vector3(ViewPortCameraCenter, ViewPortCameraCenter, 0);
 
-    private OnWeaponShootEvent _onWeaponShootEvent;
-    private OnWeaponReloadEvent _onWeaponReloadEvent;
-    
-    private void Awake()
-    {
-        _onWeaponShootEvent = new OnWeaponShootEvent();
-        _onWeaponReloadEvent = new OnWeaponReloadEvent();
-        _cameraViewportCenter = new Vector3(ViewPortCameraCenter, ViewPortCameraCenter, 1);
-    }
+    private OnWeaponShootEvent _onWeaponShootEvent = new OnWeaponShootEvent();
+    private OnWeaponReloadEvent _onWeaponReloadEvent = new OnWeaponReloadEvent();
 
 
     public enum WeaponType
     {
         None,
         AK74,
-        M1911
+        M1911,
+        Grenade
     }
-
 
     public void InitializeWeaponAnimator(WeaponAnimator weaponAnimator) 
     {
@@ -71,7 +86,6 @@ public class Weapon : MonoBehaviour
         {
             case WeaponType.None:
                 _weaponType = weaponType;
-                _damage = PawAttackDamage;
 
                 break;
             case WeaponType.AK74:
@@ -97,8 +111,17 @@ public class Weapon : MonoBehaviour
 
     public void ShootFX() 
     {
-        _weaponAnimator.FireAnimation();
-        //Sound FX;
+        _weaponAnimator?.FireAnimation();
+        switch (WeaponModel)
+        {
+            case WeaponType.AK74:
+                AudioManager.PlaySound(Ak74FireSoundName);
+
+                break;
+            case WeaponType.M1911:
+                AudioManager.PlaySound(M1911FireSoundName);
+                break;
+        }
         //Particles FX;
     }
 
@@ -117,7 +140,11 @@ public class Weapon : MonoBehaviour
                         {
                             if (hit.collider.TryGetComponent(out NPCController nPC))
                             {
-                                nPC.TakeDamage(_damage, WeaponModel);
+                                nPC.TakeDamage(_damage, ownerName, WeaponModel);
+                            }
+                            if (hit.collider.TryGetComponent(out PlayerController player))
+                            {
+                                player.TakeDamage(_damage, ownerName, WeaponModel);
                             }
                         }
                     
@@ -128,17 +155,19 @@ public class Weapon : MonoBehaviour
                 else
                 {
                     ReloadWeapon();
+                    AudioManager.PlaySound(ReloadSoundName);
+
                 }
             }       
     }   
 
     public void Fire() //ForPlayer
     {
+        
         if (_coolDownTime <= 0f)
         {
             if (_bulletsInMagazine > 0)
             {
-                ShootFX();
                 FireRay();
                 _bulletsInMagazine--;
                 _coolDownTime = 1 / _fireRate;
@@ -148,26 +177,35 @@ public class Weapon : MonoBehaviour
                     EventsAgregator.Post<OnWeaponShootEvent>(this, _onWeaponShootEvent);
                 }
             }
-            else
-            {
-                Debug.Log("Bullets over. Need to reload");
-                //click Sound
-            }
         }
+        
     }
 
 
-    public void AddAmmunition(int bulletsCount) 
+    public void AddAmmunition(int bulletsCount)
     {
+        Debug.Log($"Add ammo. Bullets count added: {bulletsCount}");
         _bulletsCount += bulletsCount;
         _onWeaponReloadEvent.bulletsCount = _bulletsCount;
         _onWeaponReloadEvent.bulletsInMagazine = _bulletsInMagazine;
         if (!npcIsOwner)
         {
             EventsAgregator.Post<OnWeaponReloadEvent>(this, _onWeaponReloadEvent);
-        }
+        }        
     }
 
+    public override string ToString()
+    {
+        string weaponParams = "";
+        weaponParams += $"FireRate: {_fireRate}\n";
+        weaponParams += $"BulletsCount: {_bulletsCount}\n";
+        weaponParams += $"BulletsInMagazine: {_bulletsInMagazine}\n";
+        weaponParams += $"MagazineCapacity: {_magazineCapacity}\n";
+        weaponParams += $"Damage: {_damage}\n";
+        weaponParams += $"CoolDownTime: {_coolDownTime}";
+
+        return weaponParams;
+    }
 
     public void ReloadWeapon() 
     {
@@ -184,7 +222,8 @@ public class Weapon : MonoBehaviour
             {
                 _bulletsInMagazine += _bulletsCount;
                 _bulletsCount = 0;
-            }         
+            }
+            AudioManager.PlaySound(ReloadSoundName);
         }
         _onWeaponReloadEvent.bulletsCount = _bulletsCount;
         _onWeaponReloadEvent.bulletsInMagazine = _bulletsInMagazine;
@@ -197,27 +236,37 @@ public class Weapon : MonoBehaviour
 
     private void FireRay() 
     {
+        switch (WeaponModel)
+        {
+            case WeaponType.AK74:
+                AudioManager.PlaySound(Ak74FireSoundName);
+                break;
+            case WeaponType.M1911:
+                AudioManager.PlaySound(M1911FireSoundName);
+                break;
+        }
         Ray ray = Camera.main.ViewportPointToRay(_cameraViewportCenter);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, ShootMaxDistance, LayerMask.GetMask(PlayersLayerName)))
         {
-            if(hit.collider.CompareTag("Enemy"))
+            if(hit.collider.CompareTag(EnemyTagName))
             {
                 if(hit.collider.TryGetComponent<NPCController>(out NPCController controller))
                 {
                     NPCController npc = controller;
-                    npc.TakeDamage(_damage, WeaponModel);
+                    npc.TakeDamage(_damage, ownerName, WeaponModel);
                 }
             }
         }
     }
-
 
     private void CooldownTimer()
     {
         if (_coolDownTime > 0)
         {
             _coolDownTime -= Time.fixedDeltaTime;
+            Mathf.Clamp(_coolDownTime, 0, MaximumCooldownTime);
+
         }
     }
 
@@ -225,5 +274,4 @@ public class Weapon : MonoBehaviour
     {
         CooldownTimer();
     }
-
 }

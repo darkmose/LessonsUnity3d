@@ -13,7 +13,7 @@
             if (_aIShared.Weapon.HasWeapon == false)
             {
                 if (_aIShared.Navigation.IsMovedToPoint == false)
-                {
+                { 
                     _aIShared.Navigation.SetDestination(MapPointsHelper.GetRandomPointFromList(MapPointsHelper.PointsList.WeaponPoints));
                 }
             }

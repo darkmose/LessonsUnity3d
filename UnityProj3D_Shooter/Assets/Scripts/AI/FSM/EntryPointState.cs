@@ -18,11 +18,11 @@ namespace FSM
             {
                 _stateSwitcher.SwitchStateTo(States.WeaponSearch);
             }
-            else if (_aIShared.Navigation.IsEnemySpied == false)
+            else if (_aIShared.Navigation.IsEnemiesSpied == false)
             {
                 _stateSwitcher.SwitchStateTo(States.EnemiesSearch);
             }
-            else if (_aIShared.Navigation.IsEnemySpied)
+            else if (_aIShared.Navigation.IsEnemiesSpied)
             {
                 _stateSwitcher.SwitchStateTo(States.EnemiesAttack);
             }

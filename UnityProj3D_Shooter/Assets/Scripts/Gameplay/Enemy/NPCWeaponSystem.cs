@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using GameEvents;
+using System;
 
 public class NPCWeaponSystem : BaseWeaponSystem
 {
-    private const int BulletsTakenFromSameWeapon = 20;
 
     [SerializeField] private Transform _weaponInventory;
     [SerializeField] private IKWeaponControl _iKWeaponControl;
@@ -54,9 +55,19 @@ public class NPCWeaponSystem : BaseWeaponSystem
             }
         }
     }
+
+
+    public void ClearWeapons() 
+    {
+        _iKWeaponControl?.IKControlOff();
+        _currentWeapon = null;
+    }
+
+
     public override void TakeAmmo(Ammunition ammunition)
     {
-        throw new System.NotImplementedException();
+        _currentWeapon?.AddAmmunition(Ammunition.BulletsCount);
+        Destroy(ammunition);
     }
 
 
@@ -65,7 +76,7 @@ public class NPCWeaponSystem : BaseWeaponSystem
         if (target != null)
         {
             transform.LookAt(target);
-            _currentWeapon.FireTarget(target);
+            _currentWeapon?.FireTarget(target);
         }
     }
 
@@ -81,12 +92,13 @@ public class NPCWeaponSystem : BaseWeaponSystem
         _currentWeapon = weapon;
         weapon.transform.SetParent(_weaponInventory);
         weapon.transform.SetPositionAndRotation(_weaponInventory.position, _weaponInventory.rotation);
-        //weapon.transform.localScale = new Vector3(2, 2, 2);
+        weapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         if (weapon.TryGetComponent(out SphereCollider sphereCollider))
         {
             sphereCollider.enabled = false;
         }
         weapon.InitializeWeaponAnimator(_weaponAnimator);
+        weapon.ownerName = gameObject.name;
         _iKWeaponControl.ReinitializeIKs(_currentWeapon.iKLHand, _currentWeapon.iKRHand);
         _iKWeaponControl.IKControlOn();
     }

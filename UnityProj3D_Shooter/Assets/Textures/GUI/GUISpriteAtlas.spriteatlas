@@ -45,15 +45,21 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 62f4f06909963604aa6fdff9e09b5923, type: 3}
     - {fileID: 2800000, guid: 09ccfed914c8bb441b0baff5c6ced45e, type: 3}
     - {fileID: 2800000, guid: 6ea935f50f2301a40a27afdc6332e012, type: 3}
+    - {fileID: 21300000, guid: 7ed2db02d9ccd0f44997048383df1c0d, type: 3}
+    - {fileID: 2800000, guid: 77d27eabd2e527a46bec49ad6cb426cf, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 7ed2db02d9ccd0f44997048383df1c0d, type: 3}
   - {fileID: 21300000, guid: 6ea935f50f2301a40a27afdc6332e012, type: 3}
   - {fileID: 21300000, guid: 62f4f06909963604aa6fdff9e09b5923, type: 3}
   - {fileID: 21300000, guid: 09ccfed914c8bb441b0baff5c6ced45e, type: 3}
+  - {fileID: 21300000, guid: 77d27eabd2e527a46bec49ad6cb426cf, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Hand_Image
   - AK74_Image
   - M1911_Image
   - target
+  - Military-Grenade-icon
   m_Tag: GUISpriteAtlas
   m_IsVariant: 0

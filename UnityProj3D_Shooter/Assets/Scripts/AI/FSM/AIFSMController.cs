@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using GameEvents;
+using System;
+using UnityEngine;
 
 namespace FSM
 {
@@ -7,7 +9,8 @@ namespace FSM
         [SerializeField] private NavigationSystem _navigationSystem;  
         [SerializeField] private VitalitySystem _vitalitySystem;  
         [SerializeField] private NPCWeaponSystem _weaponSystem;
-
+        [SerializeField] private States _currentState;
+        [SerializeField] private bool _isMovedToPoint;
         private FinitStateMachineSwitcher _stateMachineSwitcher;
         private AIShared _aISharedSystem;
 
@@ -76,6 +79,8 @@ namespace FSM
 
         private void FixedUpdate()
         {
+            _currentState = _stateMachineSwitcher.CurrentState;
+            _isMovedToPoint = _navigationSystem.IsMovedToPoint;
             _stateMachineSwitcher?.StateUpdate();
         }
 

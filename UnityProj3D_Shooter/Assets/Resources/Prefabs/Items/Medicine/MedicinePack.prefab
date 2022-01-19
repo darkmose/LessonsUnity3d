@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1886991872573813452}
   - component: {fileID: 4918004367574495063}
   - component: {fileID: 4706964799165452082}
-  - component: {fileID: 9176512114382693115}
   m_Layer: 0
   m_Name: First_Aid_Kit
   m_TagString: Untagged
@@ -49,12 +48,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2242602509323376691}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_ReflectionProbeUsage: 2
   m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -80,20 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &9176512114382693115
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2242602509323376691}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4157936779548647791, guid: a8937b157328c2c4586d7b4ad823dba1, type: 3}
 --- !u!1 &2899913298592868448
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +90,6 @@ GameObject:
   - component: {fileID: 6564488866778294575}
   - component: {fileID: 2648150700713330073}
   - component: {fileID: 3008096280738686074}
-  - component: {fileID: 4358677178047287530}
   m_Layer: 0
   m_Name: First_Aid_Kit_Lock_1
   m_TagString: Untagged
@@ -143,12 +127,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2899913298592868448}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_ReflectionProbeUsage: 2
   m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -174,20 +158,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4358677178047287530
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2899913298592868448}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1821604948956464454, guid: a8937b157328c2c4586d7b4ad823dba1, type: 3}
 --- !u!1 &3204390642389364761
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +169,6 @@ GameObject:
   - component: {fileID: 6682809057163828327}
   - component: {fileID: 6270090424297112362}
   - component: {fileID: 6778144418123836612}
-  - component: {fileID: 5202436602610431030}
   m_Layer: 0
   m_Name: First_Aid_Kit_Handle
   m_TagString: Untagged
@@ -237,12 +206,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3204390642389364761}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_ReflectionProbeUsage: 2
   m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -268,20 +237,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &5202436602610431030
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3204390642389364761}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8479608768153946515, guid: a8937b157328c2c4586d7b4ad823dba1, type: 3}
 --- !u!1 &5833664905209664994
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +248,6 @@ GameObject:
   - component: {fileID: 1791854863362973510}
   - component: {fileID: 5089001690256141845}
   - component: {fileID: 7649262174072735837}
-  - component: {fileID: 6996754579238133440}
   m_Layer: 0
   m_Name: First_Aid_Kit_Cap
   m_TagString: Untagged
@@ -331,12 +285,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5833664905209664994}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_ReflectionProbeUsage: 2
   m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -362,20 +316,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6996754579238133440
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5833664905209664994}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6547804798846893906, guid: a8937b157328c2c4586d7b4ad823dba1, type: 3}
 --- !u!1 &7931643476021001774
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,6 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7302880482892899476}
   - component: {fileID: 875266802877767272}
+  - component: {fileID: 2535663709767466973}
   m_Layer: 0
   m_Name: MedicinePack
   m_TagString: HealthItem
@@ -424,6 +365,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 148cce509beec5248a6ad424688bdf0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &2535663709767466973
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7931643476021001774}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.09, z: 0}
 --- !u!1 &9107264106949412263
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,7 +389,6 @@ GameObject:
   - component: {fileID: 9177544532912828262}
   - component: {fileID: 5786903961836546873}
   - component: {fileID: 2106800959138538205}
-  - component: {fileID: 5887950515867386943}
   m_Layer: 0
   m_Name: First_Aid_Kit_Lock_2
   m_TagString: Untagged
@@ -473,12 +426,12 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9107264106949412263}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_ReflectionProbeUsage: 2
   m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -504,17 +457,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &5887950515867386943
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9107264106949412263}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3434116185950510507, guid: a8937b157328c2c4586d7b4ad823dba1, type: 3}
